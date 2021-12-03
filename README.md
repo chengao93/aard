@@ -43,5 +43,26 @@ public static void main(String[] args) {
         User parse = ZzSerializer.parse(bytes);
 }
 ```
+##   maven config
+```$xslt
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.8.0</version>
+    <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+
+        <annotationProcessorPaths>
+            <path>
+                <groupId>com.github.chengao93</groupId>
+                <artifactId>aard</artifactId>
+                <version>1.2</version>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+```
 
 
