@@ -45,6 +45,12 @@ public static void main(String[] args) {
 ```
 ##   maven config
 ```$xslt
+<dependency>
+    <groupId>com.github.chengao93</groupId>
+    <artifactId>aard</artifactId>
+    <version>1.2</version>
+</dependency>
+
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
