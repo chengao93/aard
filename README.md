@@ -46,7 +46,7 @@ public static void main(String[] args) {
 ##   maven config
 ```$xslt
 <dependency>
-    <groupId>com.github.chengao93</groupId>
+    <groupId>io.github.chengao93</groupId>
     <artifactId>aard</artifactId>
     <version>1.2</version>
 </dependency>
@@ -62,7 +62,7 @@ public static void main(String[] args) {
 
         <annotationProcessorPaths>
             <path>
-                <groupId>com.github.chengao93</groupId>
+                <groupId>io.github.chengao93</groupId>
                 <artifactId>aard</artifactId>
                 <version>1.2</version>
             </path>
