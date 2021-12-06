@@ -25,6 +25,7 @@ import javax.tools.Diagnostic;
 
 import java.util.*;
 
+
 /**
  * Desc: 遍历抽象语法树
  */
@@ -130,10 +131,10 @@ public class EntityTreeTranslator extends TreeTranslator {
                     preList = preList.append(def);
                 }
             }
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.arrd.processor"), name("EntityService")), false));
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.arrd.processor.function"), name("*")), false));
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.arrd.processor.serializable"), name("*")), false));
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.arrd.processor.util"), name("*")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor"), name("EntityService")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor.function"), name("*")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor.serializable"), name("*")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor.util"), name("*")), false));
             preList = preList.append(treeMaker.Import(treeMaker.Select(ident("java.util"), name("*")), false));
             preList = preList.append(treeMaker.Import(treeMaker.Select(ident("io.netty.buffer"), name("*")), false));
             preList = preList.append(treeMaker.Import(treeMaker.Select(ident("java.nio"), name("ByteBuffer")), false));
@@ -253,6 +254,10 @@ public class EntityTreeTranslator extends TreeTranslator {
         }
         String methodName = jcMethodDecl.name.toString();
         if (methodName.length() <= 3) {
+            return;
+        }
+        char c4 = methodName.charAt(3);
+        if (!(c4 >= 'A' && c4 <= 'Z')) {
             return;
         }
         String fieldName = StringUtils.right(methodName, methodName.length() - 3);
@@ -3121,8 +3126,8 @@ public class EntityTreeTranslator extends TreeTranslator {
                 continue;
             }
             JCTree.JCTypeCast cast = treeMaker.TypeCast(treeMaker.Ident(this.jcClassDecl.name), ident("target"));
-            JCTree.JCMethodInvocation getInvocation = treeMaker.Apply(List.nil(), treeMaker.Select(cast, name("get" + toTitleCase(getterField))), List.nil());
-            JCTree.JCMethodInvocation invocation = treeMaker.Apply(List.nil(), select("this", "set" + toTitleCase(getterField)), List.of(getInvocation));
+            JCTree.JCMethodInvocation getInvocation = treeMaker.Apply(List.nil(), treeMaker.Select(ident("this"), name("get" + toTitleCase(getterField))), List.nil());
+            JCTree.JCMethodInvocation invocation = treeMaker.Apply(List.nil(), select(cast, "set" + toTitleCase(getterField)), List.of(getInvocation));
             block = block.append(treeMaker.Exec(invocation));
         }
 
@@ -3159,8 +3164,8 @@ public class EntityTreeTranslator extends TreeTranslator {
                 continue;
             }
             JCTree.JCTypeCast cast = treeMaker.TypeCast(treeMaker.Ident(this.jcClassDecl.name), ident("target"));
-            JCTree.JCMethodInvocation getInvocation = treeMaker.Apply(List.nil(), treeMaker.Select(cast, name("get" + toTitleCase(getterField))), List.nil());
-            JCTree.JCMethodInvocation invocation = treeMaker.Apply(List.nil(), select("this", "set" + toTitleCase(getterField)), List.of(getInvocation));
+            JCTree.JCMethodInvocation getInvocation = treeMaker.Apply(List.nil(), treeMaker.Select(ident("this"), name("get" + toTitleCase(getterField))), List.nil());
+            JCTree.JCMethodInvocation invocation = treeMaker.Apply(List.nil(), select(cast, "set" + toTitleCase(getterField)), List.of(getInvocation));
             block = block.append(treeMaker.Exec(invocation));
         }
 

@@ -7,7 +7,16 @@
     <groupId>io.github.chengao93</groupId>
     <artifactId>aard</artifactId>
     <packaging>jar</packaging>
-    <version>1.2</version>
+    <version>1.2.0</version>
+    <name>aard</name>
+    <description>
+        java faster serialization
+        特点：
+        1、使用Java AST 语法树在编译时期生成代码，抛弃传统的反射或ASM，更高效
+        2、快速的序列化与反序列化
+        3、更高效的对像copy
+    </description>
+    <url>git:https://github.com/chengao93/aard.git</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,11 +42,6 @@
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.21.0-GA</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.67</version>
         </dependency>
         <!--
         生成到本地仓库
@@ -115,25 +119,28 @@
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
 
             <!-- java doc -->
-             <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-javadoc-plugin</artifactId>
-                 <version>2.9.1</version>
-                 <executions>
-                     <execution>
-                         <id>attach-javadocs</id>
-                         <goals>
-                             <goal>jar</goal>
-                         </goals>
-                     </execution>
-                 </executions>
-             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- GPG -->
             <plugin>
@@ -165,7 +172,6 @@
         </repository>
     </distributionManagement>
 
-    <description>A Simple Java Crawler Framework</description>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -187,5 +193,4 @@
         </developerConnection>
         <url>https://github.com/chengao93/aard.git</url>
     </scm>
-    
 </project>
