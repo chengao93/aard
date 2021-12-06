@@ -48,7 +48,7 @@ public static void main(String[] args) {
 <dependency>
     <groupId>io.github.chengao93</groupId>
     <artifactId>aard</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
 </dependency>
 
 <plugin>
@@ -64,7 +64,7 @@ public static void main(String[] args) {
             <path>
                 <groupId>io.github.chengao93</groupId>
                 <artifactId>aard</artifactId>
-                <version>1.2</version>
+                <version>1.2.1</version>
             </path>
         </annotationProcessorPaths>
     </configuration>

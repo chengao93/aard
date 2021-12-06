@@ -407,6 +407,17 @@ public class ObjectSerializableUtil {
      * @author chengao chengao163postbox@163.com
      * @date 2021/10/20 18:35
      */
+    public static int valueByteLength(Object value) {
+        return valueByteLengthNotDepth(value);
+    }
+
+    /**
+     * 值字节长度,非深度
+     *
+     * @param value 值
+     * @author chengao chengao163postbox@163.com
+     * @date 2021/10/20 18:35
+     */
     public static int valueByteLengthNotDepth(Object value) {
         if (value == null) {
             return 0;

@@ -131,10 +131,10 @@ public class EntityTreeTranslator extends TreeTranslator {
                     preList = preList.append(def);
                 }
             }
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor"), name("EntityService")), false));
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor.function"), name("*")), false));
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor.serializable"), name("*")), false));
-            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("ib.plat.api.processor.util"), name("*")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.aard.processor"), name("EntityService")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.aard.processor.function"), name("*")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.aard.processor.serializable"), name("*")), false));
+            preList = preList.append(treeMaker.Import(treeMaker.Select(ident("com.aard.processor.util"), name("*")), false));
             preList = preList.append(treeMaker.Import(treeMaker.Select(ident("java.util"), name("*")), false));
             preList = preList.append(treeMaker.Import(treeMaker.Select(ident("io.netty.buffer"), name("*")), false));
             preList = preList.append(treeMaker.Import(treeMaker.Select(ident("java.nio"), name("ByteBuffer")), false));
