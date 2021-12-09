@@ -638,4 +638,161 @@ public class ObjectSerializableUtil {
         }
     }
 
+    /**
+     * 反序列化值
+     *
+     * @param byteBuffer 缓冲流
+     * @return String
+     * @author chengao chengao163postbox@163.com
+     * @date 2021/10/20 18:35
+     */
+    public static Object deserialization(ByteBuffer byteBuffer) {
+        byte type = byteBuffer.get();
+        if (type == 0) {
+            return null;
+        }
+        switch (type) {
+            case BigDecimalArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return BigDecimalArraySerializable.deserializationValue(byteBuffer);
+            case BigDecimalSerializable.TYPE:
+                return BigDecimalSerializable.deserialization(byteBuffer);
+            case BigIntegerArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return BigIntegerArraySerializable.deserializationValue(byteBuffer);
+            case BigIntegerSerializable.TYPE:
+                return BigIntegerSerializable.deserialization(byteBuffer);
+            case BoolArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return BoolArraySerializable.deserializationValue(byteBuffer);
+            case BooleanArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return BooleanArraySerializable.deserializationValue(byteBuffer);
+            case BooleanSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return BooleanSerializable.deserializationValue(byteBuffer);
+            case BoolSerializable.TYPE:
+                return BoolSerializable.deserialization(byteBuffer);
+            case BytArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return BytArraySerializable.deserializationValue(byteBuffer);
+            case ByteArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return ByteArraySerializable.deserializationValue(byteBuffer);
+            case ByteSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return ByteSerializable.deserializationValue(byteBuffer);
+            case BytSerializable.TYPE:
+                return BytSerializable.deserialization(byteBuffer);
+            case CharacterArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return CharacterArraySerializable.deserializationValue(byteBuffer);
+            case CharacterSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return CharacterSerializable.deserializationValue(byteBuffer);
+            case CharArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return CharArraySerializable.deserializationValue(byteBuffer);
+            case CharSerializable.TYPE:
+                return CharSerializable.deserialization(byteBuffer);
+            case CollectionSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return CollectionSerializable.deserializationValue(byteBuffer);
+            case DateArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return DateArraySerializable.deserializationValue(byteBuffer);
+            case DateSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return DateSerializable.deserializationValue(byteBuffer);
+            case DouArraySerializable.TYPE:
+                return DouArraySerializable.deserialization(byteBuffer);
+            case DoubleArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return DoubleArraySerializable.deserializationValue(byteBuffer);
+            case DoubleSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return DoubleSerializable.deserializationValue(byteBuffer);
+            case DouSerializable.TYPE:
+                return DouSerializable.deserialization(byteBuffer);
+            case FloatArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return FloatArraySerializable.deserializationValue(byteBuffer);
+            case FloatSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return FloatSerializable.deserializationValue(byteBuffer);
+            case FloSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return FloSerializable.deserializationValue(byteBuffer);
+            case FloArraySerializable.TYPE:
+                return FloArraySerializable.deserialization(byteBuffer);
+            case IntArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return IntArraySerializable.deserializationValue(byteBuffer);
+            case IntegerArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return IntegerArraySerializable.deserializationValue(byteBuffer);
+            case IntegerSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return IntegerSerializable.deserializationValue(byteBuffer);
+            case IntSerializable.TYPE:
+                return IntSerializable.deserialization(byteBuffer);
+            case LonArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return LonArraySerializable.deserializationValue(byteBuffer);
+            case LongArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return LongArraySerializable.deserializationValue(byteBuffer);
+            case LongSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return LongSerializable.deserializationValue(byteBuffer);
+            case LonSerializable.TYPE:
+                return LonSerializable.deserialization(byteBuffer);
+            case ShoArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return ShoArraySerializable.deserializationValue(byteBuffer);
+            case ShortArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return ShortArraySerializable.deserializationValue(byteBuffer);
+            case ShortSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return ShortSerializable.deserializationValue(byteBuffer);
+            case ShoSerializable.TYPE:
+                return ShoSerializable.deserialization(byteBuffer);
+            case SqlDateArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return SqlDateArraySerializable.deserializationValue(byteBuffer);
+            case SqlDateSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return SqlDateSerializable.deserializationValue(byteBuffer);
+            case StringArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return StringArraySerializable.deserializationValue(byteBuffer);
+            case StringBufferArraySerializable.TYPE:
+                return StringBufferArraySerializable.deserialization(byteBuffer);
+            case StringBufferSerializable.TYPE:
+                return StringBufferSerializable.deserialization(byteBuffer);
+            case StringBuilderArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return StringBuilderArraySerializable.deserializationValue(byteBuffer);
+            case StringBuilderSerializable.TYPE:
+                return StringBuilderSerializable.deserialization(byteBuffer);
+            case StringSerializable.TYPE:
+                return StringSerializable.deserialization(byteBuffer);
+            case TimestampArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return TimestampArraySerializable.deserializationValue(byteBuffer);
+            case TimestampSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return TimestampSerializable.deserializationValue(byteBuffer);
+            case MapSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return MapSerializable.deserializationValue(byteBuffer);
+            case EntityNotDepthSerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return EntityNotDepthSerializable.deserializationValue(byteBuffer);
+            default:
+                throw new SerializableException("An unsupported serialization type :" + type);
+        }
+    }
+
 }

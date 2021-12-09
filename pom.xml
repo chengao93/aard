@@ -7,7 +7,7 @@
     <groupId>io.github.chengao93</groupId>
     <artifactId>aard</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.1</version>
+    <version>1.2.4</version>
     <name>aard</name>
     <description>
         java faster serialization
@@ -27,6 +27,7 @@
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
             <version>1.0-rc4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -37,11 +38,6 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
             <version>4.1.36.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.21.0-GA</version>
         </dependency>
         <!--
         生成到本地仓库
@@ -55,6 +51,9 @@
         </dependency>
     </dependencies>
 
+    <!--
+    推送到仓库：mvn clean deploy
+    -->
     <build>
         <plugins>
             <plugin>

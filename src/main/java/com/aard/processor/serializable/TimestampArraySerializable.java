@@ -70,7 +70,7 @@ public class TimestampArraySerializable {
         int len = valueByteLength(value);
         byte[] bytes = new byte[len];
         HeapByteBufUtil.setByte(bytes, 0, TYPE);
-        HeapByteBufUtil.setByte(bytes, 1, value.length);
+        HeapByteBufUtil.setInt(bytes, 1, value.length);
         int index = 5;
         for (Timestamp val : value) {
             index = TimestampSerializable.serializableValue(bytes, index, val);

@@ -1,13 +1,13 @@
 package com.aard.processor.util;
 
+import com.aard.asm.*;
 import com.aard.processor.InstanceService;
 import com.aard.processor.exception.ClassInitException;
 import com.aard.processor.DefaultInstanceServiceImpl;
-import javassist.ClassClassPath;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
+import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author chengao chengao163postbox@163.com
  * @date 2021/10/22 10:06
  */
-public class ClassUtil {
+public class ClassUtil implements Opcodes {
 
     private static final Map<String, InstanceService> CLASS_NAME_INSTANCE_SERVICE = new ConcurrentHashMap<>();
 
@@ -46,24 +46,90 @@ public class ClassUtil {
         if (instanceService != null) {
             return instanceService.newInstance();
         }
-        try {
-            ClassPool cp = new ClassPool(true);
-            cp.insertClassPath(new ClassClassPath(InstanceService.class));
-            CtClass cc = cp.makeClass("$" + className + "$InstanceServiceImpl");
-            cc.setSuperclass(cp.get(DefaultInstanceServiceImpl.class.getName()));
-            cc.addInterface(cp.get(InstanceService.class.getName()));
-            StringBuilder methodBuilder = new StringBuilder();
-            methodBuilder.append("public Object newInstance() {");
-            methodBuilder.append("return new ").append(className).append("();");
-            methodBuilder.append("}");
-            cc.addMethod(CtMethod.make(methodBuilder.toString(), cc));
-            Class classes = cc.toClass();
-            instanceService = (InstanceService) classes.getConstructor().newInstance();
-            CLASS_NAME_INSTANCE_SERVICE.put(className, instanceService);
-            return instanceService.newInstance();
-        } catch (Exception e) {
-            throw new ClassInitException(e.getMessage());
+        synchronized (CLASS_NAME_INSTANCE_SERVICE) {
+            if (CLASS_NAME_INSTANCE_SERVICE.containsKey(className)) {
+                return CLASS_NAME_INSTANCE_SERVICE.get(className).newInstance();
+            }
+            try {
+                String prefix = "";
+                if (StringUtils.startsWith(className, "java.")) {
+                    prefix = "$";
+                }
+                String implClassName = prefix + className + "$InstanceServiceImpl";
+                ClassLoader classLoader = Class.forName(className).getClassLoader();
+                if (classLoader == null) {
+                    classLoader = ClassUtil.class.getClassLoader();
+                }
+                byte[] bytes = createInstanceImplClass(implClassName, className);
+                Method method = AardReflectUtil.getMethod(classLoader.getClass(), "defineClass", String.class, byte[].class, int.class, int.class);
+                if (false == method.isAccessible()) {
+                    method.setAccessible(true);
+                }
+                Class<?> classes = (Class<?>) method.invoke(classLoader, null, bytes, 0, bytes.length);
+                instanceService = (InstanceService) classes.getConstructor().newInstance();
+                CLASS_NAME_INSTANCE_SERVICE.put(className, instanceService);
+                return instanceService.newInstance();
+            } catch (Exception e) {
+                throw new ClassInitException(e.getMessage());
+            }
         }
+    }
+
+    /**
+     * 创建实现类
+     *
+     * @param implClassName     类名
+     * @param instanceClassName 实例类名
+     * @return byte[]
+     * @author chengao chengao163postbox@163.com
+     * @date 2021/12/9 17:59
+     */
+    private static byte[] createInstanceImplClass(String implClassName, String instanceClassName) {
+
+        ClassWriter cw = new ClassWriter(0);
+        MethodVisitor mv;
+        String implClassNamePath = classPath(implClassName);
+        String instanceClassNamePath = classPath(instanceClassName);
+
+        cw.visit(52, ACC_PUBLIC + ACC_SUPER, implClassNamePath, null, classPath(DefaultInstanceServiceImpl.class), new String[]{classPath(InstanceService.class)});
+
+        String className = implClassName.substring(implClassName.indexOf(".") + 1);
+        cw.visitSource(className + ".java", null);
+
+        {
+            mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+            mv.visitCode();
+            Label l0 = new Label();
+            mv.visitLabel(l0);
+            mv.visitLineNumber(7, l0);
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitMethodInsn(INVOKESPECIAL, classPath(DefaultInstanceServiceImpl.class), "<init>", "()V", false);
+            mv.visitInsn(RETURN);
+            Label l1 = new Label();
+            mv.visitLabel(l1);
+            mv.visitLocalVariable("this", "L" + implClassNamePath + ";", null, l0, l1, 0);
+            mv.visitMaxs(1, 1);
+            mv.visitEnd();
+        }
+        {
+            mv = cw.visitMethod(ACC_PUBLIC, "newInstance", "()L" + classPath(Object.class) + ";", null, null);
+            mv.visitCode();
+            Label l0 = new Label();
+            mv.visitLabel(l0);
+            mv.visitLineNumber(10, l0);
+            mv.visitTypeInsn(NEW, instanceClassNamePath);
+            mv.visitInsn(DUP);
+            mv.visitMethodInsn(INVOKESPECIAL, instanceClassNamePath, "<init>", "()V", false);
+            mv.visitInsn(ARETURN);
+            Label l1 = new Label();
+            mv.visitLabel(l1);
+            mv.visitLocalVariable("this", "L" + implClassNamePath + ";", null, l0, l1, 0);
+            mv.visitMaxs(2, 1);
+            mv.visitEnd();
+        }
+        cw.visitEnd();
+
+        return cw.toByteArray();
     }
 
     private static final Map<String, InstanceService> CLASS_NAME_INSTANCE_SERVICE_INT_PARAM = new ConcurrentHashMap<>();
@@ -94,24 +160,92 @@ public class ClassUtil {
         if (instanceService != null) {
             return instanceService.newInstance(param1);
         }
-        try {
-            ClassPool cp = new ClassPool(true);
-            cp.insertClassPath(new ClassClassPath(InstanceService.class));
-            CtClass cc = cp.makeClass("$" + className + "$Int$InstanceServiceImpl");
-            cc.setSuperclass(cp.get(DefaultInstanceServiceImpl.class.getName()));
-            cc.addInterface(cp.get(InstanceService.class.getName()));
-            StringBuilder methodBuilder = new StringBuilder();
-            methodBuilder.append("public Object newInstance(int param1) {");
-            methodBuilder.append("return new ").append(className).append("(param1);");
-            methodBuilder.append("}");
-            cc.addMethod(CtMethod.make(methodBuilder.toString(), cc));
-            Class classes = cc.toClass();
-            instanceService = (InstanceService) classes.getConstructor().newInstance();
-            CLASS_NAME_INSTANCE_SERVICE_INT_PARAM.put(className, instanceService);
-            return instanceService.newInstance(param1);
-        } catch (Exception e) {
-            throw new ClassInitException(e.getMessage());
+        synchronized (CLASS_NAME_INSTANCE_SERVICE_INT_PARAM) {
+            if (CLASS_NAME_INSTANCE_SERVICE_INT_PARAM.containsKey(className)) {
+                return CLASS_NAME_INSTANCE_SERVICE_INT_PARAM.get(className).newInstance();
+            }
+            try {
+                String prefix = "";
+                if (StringUtils.startsWith(className, "java.")) {
+                    prefix = "$";
+                }
+                String implClassName = prefix + className + "$Int$InstanceServiceImpl";
+                ClassLoader classLoader = Class.forName(className).getClassLoader();
+                if (classLoader == null) {
+                    classLoader = ClassUtil.class.getClassLoader();
+                }
+                byte[] bytes = createInstanceImplClassParam1(implClassName, className);
+                Method method = classLoader.getClass().getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
+                if (false == method.isAccessible()) {
+                    method.setAccessible(true);
+                }
+                Class<?> classes = (Class<?>) method.invoke(classLoader, null, bytes, 0, bytes.length);
+                instanceService = (InstanceService) classes.getConstructor().newInstance();
+                CLASS_NAME_INSTANCE_SERVICE_INT_PARAM.put(className, instanceService);
+                return instanceService.newInstance(param1);
+            } catch (Exception e) {
+                throw new ClassInitException(e.getMessage());
+            }
         }
+    }
+
+    /**
+     * 创建实现类
+     *
+     * @param implClassName     类名
+     * @param instanceClassName 实例类名
+     * @return byte[]
+     * @author chengao chengao163postbox@163.com
+     * @date 2021/12/9 17:59
+     */
+    private static byte[] createInstanceImplClassParam1(String implClassName, String instanceClassName) {
+
+        ClassWriter cw = new ClassWriter(0);
+        MethodVisitor mv;
+        String implClassNamePath = classPath(implClassName);
+        String instanceClassNamePath = classPath(instanceClassName);
+
+        cw.visit(52, ACC_PUBLIC + ACC_SUPER, implClassNamePath, null, classPath(DefaultInstanceServiceImpl.class), new String[]{classPath(InstanceService.class)});
+
+        String className = implClassName.substring(implClassName.indexOf(".") + 1);
+        cw.visitSource(className + ".java", null);
+
+        {
+            mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+            mv.visitCode();
+            Label l0 = new Label();
+            mv.visitLabel(l0);
+            mv.visitLineNumber(7, l0);
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitMethodInsn(INVOKESPECIAL, classPath(DefaultInstanceServiceImpl.class), "<init>", "()V", false);
+            mv.visitInsn(RETURN);
+            Label l1 = new Label();
+            mv.visitLabel(l1);
+            mv.visitLocalVariable("this", "L" + implClassNamePath + ";", null, l0, l1, 0);
+            mv.visitMaxs(1, 1);
+            mv.visitEnd();
+        }
+        {
+            mv = cw.visitMethod(ACC_PUBLIC, "newInstance", "(I)L" + classPath(Object.class) + ";", null, null);
+            mv.visitCode();
+            Label l0 = new Label();
+            mv.visitLabel(l0);
+            mv.visitLineNumber(12, l0);
+            mv.visitTypeInsn(NEW, instanceClassNamePath);
+            mv.visitInsn(DUP);
+            mv.visitVarInsn(ILOAD, 1);
+            mv.visitMethodInsn(INVOKESPECIAL, instanceClassNamePath, "<init>", "(I)V", false);
+            mv.visitInsn(ARETURN);
+            Label l1 = new Label();
+            mv.visitLabel(l1);
+            mv.visitLocalVariable("this", "L" + implClassNamePath + ";", null, l0, l1, 0);
+            mv.visitLocalVariable("param", "I", null, l0, l1, 1);
+            mv.visitMaxs(3, 2);
+            mv.visitEnd();
+        }
+        cw.visitEnd();
+
+        return cw.toByteArray();
     }
 
     /**
@@ -151,4 +285,29 @@ public class ClassUtil {
         }
         return false;
     }
+
+    /**
+     * 类路径
+     *
+     * @param classes 类
+     * @return String
+     * @author chengao chengao163postbox@163.com
+     * @date 2021/12/9 17:46
+     */
+    private static String classPath(Class classes) {
+        return classPath(classes.getName());
+    }
+
+    /**
+     * 类名路径
+     *
+     * @param className 类名
+     * @return String
+     * @author chengao chengao163postbox@163.com
+     * @date 2021/12/9 17:45
+     */
+    private static String classPath(String className) {
+        return className.replace(".", "/");
+    }
+
 }

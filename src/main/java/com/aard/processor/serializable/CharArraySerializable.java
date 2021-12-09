@@ -65,7 +65,7 @@ public class CharArraySerializable {
         int len = 5 + (value.length << 1);
         byte[] bytes = new byte[len];
         HeapByteBufUtil.setByte(bytes, 0, TYPE);
-        HeapByteBufUtil.setByte(bytes, 1, value.length);
+        HeapByteBufUtil.setInt(bytes, 1, value.length);
         int index = 5;
         for (char val : value) {
             index = CharSerializable.serializableValue(bytes, index, val);

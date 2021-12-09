@@ -34,6 +34,6 @@ public class AardSerializer {
             return null;
         }
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        return (T) ObjectSerializableUtil.deserializationValue(buffer);
+        return (T) ObjectSerializableUtil.deserialization(buffer);
     }
 }

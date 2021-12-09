@@ -69,7 +69,7 @@ public class IntArraySerializable {
         int len = 5 + (value.length << 2);
         byte[] bytes = new byte[len];
         HeapByteBufUtil.setByte(bytes, 0, TYPE);
-        HeapByteBufUtil.setByte(bytes, 1, value.length);
+        HeapByteBufUtil.setInt(bytes, 1, value.length);
         int index = 5;
         for (int val : value) {
             index = IntSerializable.serializableValue(bytes, index, val);
