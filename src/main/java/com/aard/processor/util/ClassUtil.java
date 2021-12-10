@@ -175,7 +175,7 @@ public class ClassUtil implements Opcodes {
                     classLoader = ClassUtil.class.getClassLoader();
                 }
                 byte[] bytes = createInstanceImplClassParam1(implClassName, className);
-                Method method = classLoader.getClass().getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
+                Method method = AardReflectUtil.getMethod(classLoader.getClass(), "defineClass", String.class, byte[].class, int.class, int.class);
                 if (false == method.isAccessible()) {
                     method.setAccessible(true);
                 }

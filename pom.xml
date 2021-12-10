@@ -7,14 +7,14 @@
     <groupId>io.github.chengao93</groupId>
     <artifactId>aard</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.4</version>
+    <version>1.2.6</version>
     <name>aard</name>
     <description>
         java faster serialization
         特点：
-        1、使用Java AST 语法树在编译时期生成代码，抛弃传统的反射或ASM，更高效
-        2、快速的序列化与反序列化
-        3、更高效的对像copy
+        1、使用Java AST 语法树在编译时期生成代码，抛弃传统的反射或ASM，达到接近原生的执行效率。
+        2、提供快速的序列化与反序列化。
+        3、提供更高效的对象copy。
     </description>
     <url>git:https://github.com/chengao93/aard.git</url>
 
@@ -180,7 +180,7 @@
     <developers>
         <developer>
             <name>chengao93</name>
-            <email>chengao163postbox@qq.com</email>
+            <email>chengao163postbox@163.com</email>
         </developer>
     </developers>
     <scm>
