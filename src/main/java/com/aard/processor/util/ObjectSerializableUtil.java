@@ -117,6 +117,10 @@ public class ObjectSerializableUtil {
                 return TimestampSerializable.serializable((java.sql.Timestamp) value);
             case "[Ljava.sql.Timestamp;":
                 return TimestampArraySerializable.serializable((java.sql.Timestamp[]) value);
+            case "java.lang.Class;":
+                return ClassSerializable.serializable((java.lang.Class) value);
+            case "[Ljava.lang.Class;":
+                return ClassArraySerializable.serializable((java.lang.Class[]) value);
             default:
                 if (value instanceof Collection) {
                     return CollectionSerializable.serializable((Collection) value);
@@ -279,6 +283,12 @@ public class ObjectSerializableUtil {
             case "[Ljava.sql.Timestamp;":
                 buffer.writeBytes(TimestampArraySerializable.serializableValue((java.sql.Timestamp[]) value));
                 break;
+            case "java.lang.Class":
+                buffer.writeBytes(ClassSerializable.serializableValue((Class) value));
+                break;
+            case "[Ljava.lang.Class;":
+                buffer.writeBytes(ClassArraySerializable.serializableValue((Class[]) value));
+                break;
             default:
                 if (value instanceof Collection) {
                     buffer.writeBytes(CollectionSerializable.serializableValue((Collection) value));
@@ -388,6 +398,10 @@ public class ObjectSerializableUtil {
                 return TimestampSerializable.serializableValue(bytes, index, (java.sql.Timestamp) value);
             case "[Ljava.sql.Timestamp;":
                 return TimestampArraySerializable.serializableValue(bytes, index, (java.sql.Timestamp[]) value);
+            case "java.lang.Class":
+                return ClassSerializable.serializableValue(bytes, index, (Class) value);
+            case "[Ljava.lang.Class;":
+                return ClassArraySerializable.serializableValue(bytes, index, (Class[]) value);
             default:
                 if (value instanceof Collection) {
                     return CollectionSerializable.serializableValue(bytes, index, (Collection) value);
@@ -504,6 +518,10 @@ public class ObjectSerializableUtil {
                 return TimestampSerializable.valueByteLength((java.sql.Timestamp) value);
             case "[Ljava.sql.Timestamp;":
                 return TimestampArraySerializable.valueByteLength((java.sql.Timestamp[]) value);
+            case "java.lang.Class":
+                return ClassSerializable.valueByteLength((Class) value);
+            case "[Ljava.lang.Class;":
+                return ClassArraySerializable.valueByteLength((Class[]) value);
             default:
                 if (value instanceof Collection) {
                     return CollectionSerializable.valueByteLength((Collection) value);
@@ -633,6 +651,10 @@ public class ObjectSerializableUtil {
                 return MapSerializable.deserializationValue(byteBuffer);
             case EntityNotDepthSerializable.TYPE:
                 return EntityNotDepthSerializable.deserializationValue(byteBuffer);
+            case ClassSerializable.TYPE:
+                return ClassSerializable.deserializationValue(byteBuffer);
+            case ClassArraySerializable.TYPE:
+                return ClassArraySerializable.deserializationValue(byteBuffer);
             default:
                 throw new SerializableException("An unsupported serialization type :" + type);
         }
@@ -790,6 +812,11 @@ public class ObjectSerializableUtil {
             case EntityNotDepthSerializable.TYPE:
                 byteBuffer.position(byteBuffer.position() - 1);
                 return EntityNotDepthSerializable.deserializationValue(byteBuffer);
+            case ClassArraySerializable.TYPE:
+                byteBuffer.position(byteBuffer.position() - 1);
+                return ClassArraySerializable.deserializationValue(byteBuffer);
+            case ClassSerializable.TYPE:
+                return ClassSerializable.deserialization(byteBuffer);
             default:
                 throw new SerializableException("An unsupported serialization type :" + type);
         }

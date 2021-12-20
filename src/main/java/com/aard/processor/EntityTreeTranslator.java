@@ -3340,6 +3340,8 @@ public class EntityTreeTranslator extends TreeTranslator {
                 return StringSerializable.class.getSimpleName();
             case "java.sql.Timestamp":
                 return TimestampSerializable.class.getSimpleName();
+            case "java.lang.Class":
+                return ClassSerializable.class.getSimpleName();
             case "boolean":
                 return BoolSerializable.class.getSimpleName();
             case "byte":
@@ -3391,6 +3393,8 @@ public class EntityTreeTranslator extends TreeTranslator {
                         return StringArraySerializable.class.getSimpleName();
                     case "java.sql.Timestamp[]":
                         return TimestampArraySerializable.class.getSimpleName();
+                    case "java.lang.Class[]":
+                        return ClassArraySerializable.class.getSimpleName();
                     case "boolean[]":
                         return BoolArraySerializable.class.getSimpleName();
                     case "byte[]":

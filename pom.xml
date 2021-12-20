@@ -7,7 +7,7 @@
     <groupId>io.github.chengao93</groupId>
     <artifactId>aard</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
     <name>aard</name>
     <description>
         java faster serialization
